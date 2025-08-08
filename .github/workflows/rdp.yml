@@ -28,8 +28,9 @@ jobs:
       run: |
         Write-Host "============= RDP CONNECTION INFO ============="
         Write-Host "RDP Username: runneradmin"
-        $ip = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -like "*Ethernet*" -or $_.InterfaceAlias -like "*Default Switch*"}).IPAddress
-        Write-Host "RDP IP Address: $ip"
+        Write-Host "Getting public IP..."
+        $publicIP = (Resolve-DnsName -Name myip.opendns.com -Server resolver1.opendns.com).IPAddress
+        Write-Host "RDP IP Address: $publicIP"
         Write-Host "RDP Port: 3389"
         Write-Host "=============================================="
 
