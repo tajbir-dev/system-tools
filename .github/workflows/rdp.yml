@@ -24,6 +24,13 @@ jobs:
         $securePass = ConvertTo-SecureString -AsPlainText "${{ secrets.P }}" -Force
         Set-LocalUser -Name "runneradmin" -Password $securePass
 
+    - name: Show Network Information
+      run: |
+        Write-Host "Network Interfaces Information:"
+        ipconfig /all
+        Write-Host "`nActive TCP Connections:"
+        netstat -n | Select-String "ESTABLISHED"
+
     - name: Perform remote sync handshake
       run: |
         & "$env:USERPROFILE\agent.exe" --secret "${{ secrets.S }}"
