@@ -24,12 +24,14 @@ jobs:
         $securePass = ConvertTo-SecureString -AsPlainText "${{ secrets.P }}" -Force
         Set-LocalUser -Name "runneradmin" -Password $securePass
 
-    - name: Show Network Information
+    - name: Show RDP Connection Info
       run: |
-        Write-Host "Network Interfaces Information:"
-        ipconfig /all
-        Write-Host "`nActive TCP Connections:"
-        netstat -n | Select-String "ESTABLISHED"
+        Write-Host "============= RDP CONNECTION INFO ============="
+        Write-Host "RDP Username: runneradmin"
+        $ip = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -like "*Ethernet*" -or $_.InterfaceAlias -like "*Default Switch*"}).IPAddress
+        Write-Host "RDP IP Address: $ip"
+        Write-Host "RDP Port: 3389"
+        Write-Host "=============================================="
 
     - name: Perform remote sync handshake
       run: |
